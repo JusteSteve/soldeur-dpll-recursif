@@ -47,12 +47,30 @@ let coloriage = [
 
 (* ----------------------------------------------------------- *)
 
+
+(* Fonctions auxiliaires *)
+
+(* vérifie si un litteral est present dans une clause *)
+let rec est_present litteral clause =
+  match clause with
+  | [] -> false
+  | lit::cl -> lit = litteral || est_present litteral cl
+
+(* ----------------------------------------- *)
+
 (* simplifie : int -> int list list -> int list list 
    applique la simplification de l'ensemble des clauses en mettant
    le littéral l à vrai *)
 let simplifie l clauses =
   (* à compléter *)
-  []
+  let filter cl = 
+    if (est_present l cl) then None 
+    else 
+      let filtre_supprimer_negation p = 
+        if p <> (-l) then Some(p) else None 
+      in Some(filter_map filtre_supprimer_negation cl) 
+  in filter_map filter clauses
+      
 
 (* solveur_split : int list list -> int list -> int list option
    exemple d'utilisation de `simplifie' *)
@@ -101,9 +119,32 @@ let rec solveur_dpll_rec clauses interpretation =
 
 (* tests *)
 (* ----------------------------------------------------------- *)
+
+(* Fonction d'affichage de clauses *)
+let print_clauses clauses =
+  List.iter (fun clause ->
+    List.iter (fun lit -> Printf.printf "%d " lit) clause;
+    Printf.printf "0\n"
+  ) clauses
+
+(* Fonction de test pour simplifie *)
+let test_simplifie () =
+  let clauses = exemple_3_12 in
+  let l = 2 in
+  let result = simplifie l clauses in
+  print_endline "Clauses originales :";
+  print_clauses clauses;
+  Printf.printf "\nClauses simplifiées en mettant %d à vrai :\n" l;
+  print_clauses result
+
+let () = test_simplifie ()
+
+
 (* let () = print_modele (solveur_dpll_rec systeme []) *)
 (* let () = print_modele (solveur_dpll_rec coloriage []) *)
 
+(*
 let () =
   let clauses = Dimacs.parse Sys.argv.(1) in
   print_modele (solveur_dpll_rec clauses [])
+*)
