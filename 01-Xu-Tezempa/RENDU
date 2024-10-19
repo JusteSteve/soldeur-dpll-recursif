@@ -10,7 +10,7 @@ Date limite: le vendredi 25 octobre 2024 à 19:00
 
 Identité
 --------
-Nombre de binôme: **à remplir**
+Nombre de binôme: 01
 Nom, prénom 1: Xu Nic
 Nom, prénom 2: Tezempa Sylvain
 
@@ -21,8 +21,7 @@ Questions sur votre code
    et que ensuite `./dpll sudoku-4x4.cnf` donne la réponse attendue (voir
    fichier README) ?
 
-**à remplir**
-
+    Oui 
 ---
 
 1. Avez-vous utilisé la fonction `filter_map` (donné dans dpll.ml)
@@ -32,7 +31,10 @@ Questions sur votre code
    - Si non, expliquez en quelques phrases en français comment
      fonctionne votre implémentation de `simplifie`.
 
-**à remplir**
+
+  Oui, la fonction `filter_map` est utilisée dans `simplifie` pour appliquer des filtres à chaque clause de l'ensemble de clauses. 
+  Elle permet de transformer et filtrer les clauses en fonction du littéral donné.
+
 
 ---
 

@@ -53,12 +53,11 @@ let coloriage = [
    le littéral l à vrai 
 *)
 let simplifie l clauses =
-  (* à compléter *)
   let filter cl = 
-    if (mem l cl) then None 
+    if (mem l cl) then None (* supprimer clause contenant un littéral donné *)
     else 
       let filtre_supprimer_negation p = 
-        if p <> (-l) then Some(p) else None 
+        if p <> (-l) then Some(p) else None (* supprimer la négation du littéral donné *)
       in Some(filter_map filtre_supprimer_negation cl) 
   in filter_map filter clauses
       
@@ -93,24 +92,6 @@ let rec solveur_split clauses interpretation =
       ce littéral ;
     - sinon, lève une exception `Failure "pas de littéral pur"' 
 *)
-(*
-let pur clauses =
-  let ens_litteraux = List.flatten clauses in (* convertir l'ensemble de clauses en ensemble de littéraux *)
-  let rec verif_puretee lst acc = match lst with
-    | [] -> failwith "Aucun littéral pur trouvé"
-    | lit::ens -> 
-      let est_pur litteral ac tl = 
-        (* 
-        si un littéral ou sa négation n'est pas présent dans la liste contenant les littéraux non purs 
-        et que sa négation n'est pas présente dans la liste liste des litéraux 
-        alors il est pur 
-        *)
-        not(List.mem litteral ac || List.mem (-litteral) ac) && not(List.mem (-litteral) tl) in 
-      if(est_pur lit acc ens) then lit 
-      else verif_puretee ens (lit::acc) 
-  in verif_puretee ens_litteraux [] 
-  *)
-
 let pur clauses =
   (* Extraire tous les littéraux dans un seul ensemble *)
   let lits = flatten clauses in
@@ -127,17 +108,6 @@ let pur clauses =
       le littéral de cette clause unitaire ;
     - sinon, lève une exception `Not_found' 
 *)
-(*
-let unitaire clauses =
-  (* à compléter *)
-  let rec trouver_unitaire cl = match cl with 
-  | [] -> raise Not_found
-  | l::cls -> 
-      match l with
-        | l::[] -> l (* si une clause contient un seul littéral le renvoyer*)
-        | _ -> trouver_unitaire cls (* sinon chercher dans les autres clauses *)
-  in trouver_unitaire clauses 
-*)
 let unitaire clauses =
   (* si la clause contient un littéral unitaire le retourne *)
   let rec aux clauses =  (* Correction ici : on travaille sur la liste des clauses *)
@@ -152,7 +122,7 @@ let unitaire clauses =
 (* solveur_dpll_rec : int list list -> int list -> int list option *)
 let rec solveur_dpll_rec clauses interpretation =
   match clauses with
-  | [] -> Some interpretation (* ensemble vide de clause satisfiable  *)
+  | [] -> Some interpretation (* ensemble vide de clause satisfiable *)
   | _ when mem [] clauses  -> None (* clause vide insatisfiable *)
   | _  -> 
     try (* littéral pur *)
@@ -167,56 +137,14 @@ let rec solveur_dpll_rec clauses interpretation =
 
           let lit = hd (hd clauses) in (* choisir un littéral *)
           let branche = solveur_dpll_rec (simplifie lit clauses) (lit::interpretation) in 
+
             match branche with 
-              | None -> solveur_dpll_rec (simplifie (-lit) clauses) ((-lit)::interpretation) (* si branche insatisfiable *)             
+              | None -> solveur_dpll_rec (simplifie (-lit) clauses) ((-lit)::interpretation) (* si branche insatisfiable *)
               | _ -> branche (* si branche satisfiable *)
-        
-        
-
-    
-
 
 (* tests *)
+
 (* ----------------------------------------------------------- *)
-
-(* Fonction d'affichage de clauses *)
-let print_clauses clauses =
-  List.iter (fun clause ->
-    List.iter (fun lit -> Printf.printf "%d " lit) clause;
-    Printf.printf "0\n"
-  ) clauses
-
-(* Fonction de test pour simplifie *)
-
-
-let test_simplifie () =
-  let clauses = exemple_3_12 in
-  let l = 2 in
-  let result = simplifie l clauses in
-  print_endline "Clauses originales :";
-  print_clauses clauses;
-  Printf.printf "\nClauses simplifiées en mettant %d à vrai :\n" l;
-  print_clauses result ;;
-
-
-
-let test_pur() = 
-  let clause = [[1];[1;2;-1];[-2;1;-3];[2]] in 
-  let result = pur clause in 
-  print_endline "Clauses originales :";
-  print_clauses clause;
-  Printf.printf "\n%d " result
-
-let test_solveur() =
-  let clause = coloriage in 
-  let result = solveur_dpll_rec clause [] in
-  print_endline "Clauses originales unitaires :\n";
-  print_clauses clause;
-  print_modele result
-
-
-(*let () = test_solveur()*)
-
 
 (* let () = print_modele (solveur_dpll_rec systeme []) *)
  (*let () = print_modele (solveur_dpll_rec coloriage []) *)
