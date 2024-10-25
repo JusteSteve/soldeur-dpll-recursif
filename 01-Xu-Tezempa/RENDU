@@ -2,7 +2,7 @@
                              fichier RENDU
                        
 
-********** à remplir obligatoirement **********
+               ********** à remplir obligatoirement **********
 
 **Un mini-projet sans fichier RENDU rempli ne recevra pas de note.**
 
@@ -20,8 +20,7 @@ Questions sur votre code
 0. Avez-vous testé que `make dpll` s'exécute sans erreurs ou warnings,
    et que ensuite `./dpll sudoku-4x4.cnf` donne la réponse attendue (voir
    fichier README) ?
-
-    Oui 
+   `make dpll`s'exécute correctement, et `./dpll sudoku-4x4.cnf`donne la réponse attendue.
 ---
 
 1. Avez-vous utilisé la fonction `filter_map` (donné dans dpll.ml)
@@ -31,9 +30,10 @@ Questions sur votre code
    - Si non, expliquez en quelques phrases en français comment
      fonctionne votre implémentation de `simplifie`.
 
-
-  Oui, la fonction `filter_map` est utilisée dans `simplifie` pour appliquer des filtres à chaque clause de l'ensemble de clauses. 
-  Elle permet de transformer et filtrer les clauses en fonction du littéral donné.
+On a défini un filtre `filter`qui se charge de supprimer les clauses contenant un littéral donné, et sa négation dans les clauses qui la contienne.
+Ensuite on utilise la fonction `filter_map` pour appliquer ce filtre à l'ensemble des clauses.
+Donc oui, la fonction `filter_map` est utilisée dans `simplifie` pour appliquer un filtre à chaque clause de l'ensemble de clauses. 
+Elle permet de transformer et filtrer les clauses en fonction du littéral donné.
 
 
 ---
@@ -47,7 +47,10 @@ Questions sur votre code
    comment ces fonctions auxiliaires sont utilisées dans votre
    implémentation de la fonction `unitaire`.
 
-**à remplir**
+La fonction unitaire utilise une fonction auxilaire aux :
+   - Si l'ensemble des clauses est vide, aux lève l'exception `Not_found`.
+   - Si elle trouve trouve une clause contenant un unique littéral, elle le renvoie.
+   - Sinon elle continue sa recherhce dans les clauses restentes.
 
 ---
 
@@ -56,19 +59,36 @@ Questions sur votre code
    quelques phrases en français comment ces fonctions auxiliaires sont
    utilisées dans votre implémentation de la fonction `pur`.
 
-**à remplir**
+La fonction `pur` va travailler sur l'ensemble des littéraux, obtenu avec la fonction `flatten` appliquée sur les l'ensemble des clauses.
+On définit le prédicat `is_pur` qui est vrai seulement si la négation de se littéral ne se trouve pas dans la liste des littéraux, pour vérifier cela on utilise la fonction `mem`.
+Puis avec la fonction `find`on applique ce prédicat à l'ensemble des littéraux, pour ainsi trouver le premier littéral pur.
+Si aucun littéral pur n'est trouvé, on lève une exception `failure "pas de littéral pur"`.
 
 ---
 
-4. Donnez un exemple d'une formule pour laquelle les deux fonctions
+1. Donnez un exemple d'une formule pour laquelle les deux fonctions
    `solveur_split` et `solveur_dpll_rec` ont un comportement
    différent, et expliquez les différences entre ces deux fonctions.
 
-**à remplir**
+Pour la `formule = [[1;2;3];[2;4];[3];[-1;4]]`
+Avec `solveur_split`on obtient :
+- `[[2;4];[3];[4]] [1]`
+- `[[2;4];[4]] [1; 3]`
+- `SAT 1 3 4 0`
+
+Tant dis que avec `solveur_dpll_rec`on obtient :
+- `[[2;4];[-1;4]] [3]` car 3 est unitaire
+-  `SAT 3 4 0` car 4 est le premier littéral pur
+  
+`solveur_split` a un comportement plus naïf et va donc choisir le premier littéral trouvé pour le simplifier.
+Contrairement à `solveur_dpll_rec` qui aura un comportement plus stratégique, en simplifiant en priorité les clauses unitaire, puis les clauses pur et si aucun des deux n'est trouvé il prendra le premier littéral trouvé.
+Ainsi `solveur_dpll_rec`sera plus éfficace que `solveur_split`
+  
+
 
 ---
 
-5. Avez-vous d'autres remarques sur votre rendu ? (question optionnelle)
+1. Avez-vous d'autres remarques sur votre rendu ? (question optionnelle)
 
 **à remplir**
 

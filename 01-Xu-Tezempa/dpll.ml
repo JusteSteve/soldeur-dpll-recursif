@@ -62,11 +62,13 @@ let simplifie l clauses =
   in filter_map filter clauses
       
 
-(* solveur_split : int list list -> int list -> int list option
-   exemple d'utilisation de `simplifie' 
+(* 
+solveur_split : int list list -> int list -> int list option
+ exemple d'utilisation de `simplifie' 
 *)
-(* cette fonction ne doit pas être modifiée, sauf si vous changez 
-   le type de la fonction simplifie 
+(* 
+cette fonction ne doit pas être modifiée, sauf si vous changez 
+le type de la fonction simplifie 
 *)
 let rec solveur_split clauses interpretation =
   (* l'ensemble vide de clauses est satisfiable *)
@@ -83,6 +85,7 @@ let rec solveur_split clauses interpretation =
 (* tests *)
 (* let () = print_modele (solveur_split systeme []) *)
 (* let () = print_modele (solveur_split coloriage []) *)
+(*let () = print_modele (solveur_split ([[1; 2; 3]; [2;4]; [3]; [-1; 4]]) [])*)
 
 (* solveur dpll récursif *)
 (* ----------------------------------------------------------- *)
@@ -103,6 +106,7 @@ let pur clauses =
     lit_pur
   with Not_found -> raise (Failure "pas de littéral pur")
 
+
 (* unitaire : int list list -> int
     - si `clauses' contient au moins une clause unitaire, retourne
       le littéral de cette clause unitaire ;
@@ -122,25 +126,25 @@ let unitaire clauses =
 (* solveur_dpll_rec : int list list -> int list -> int list option *)
 let rec solveur_dpll_rec clauses interpretation =
   match clauses with
-  | [] -> Some interpretation (* ensemble vide de clause satisfiable *)
+  | [] -> Some interpretation (* si l'ensemble des clauses est vide alors la formule est satisfiable *)
   | _ when mem [] clauses  -> None (* clause vide insatisfiable *)
   | _  -> 
-    try (* littéral pur *)
-      let lit_pur = pur clauses in
-      solveur_dpll_rec (simplifie lit_pur clauses) (lit_pur::interpretation)
-    with Failure _ ->
+    try (* simplifier littéral unitaire si il y'en a *) 
+      let lit_unit = unitaire clauses in 
+      solveur_dpll_rec (simplifie lit_unit clauses) (lit_unit::interpretation)
+    with Not_found -> 
 
-        try (*littéral unitaire*) 
-          let lit_unit = unitaire clauses in 
-          solveur_dpll_rec (simplifie lit_unit clauses) (lit_unit::interpretation)
-        with Not_found -> 
+      try (* simplifier littéral pur si il y'en a *)
+        let lit_pur = pur clauses in
+        solveur_dpll_rec (simplifie lit_pur clauses) (lit_pur::interpretation)
+      with Failure _ ->
 
-          let lit = hd (hd clauses) in (* choisir un littéral *)
-          let branche = solveur_dpll_rec (simplifie lit clauses) (lit::interpretation) in 
+        let lit = hd (hd clauses) in (* sinon choisir un littéral *)
+        let branche = solveur_dpll_rec (simplifie lit clauses) (lit::interpretation) in 
 
-            match branche with 
-              | None -> solveur_dpll_rec (simplifie (-lit) clauses) ((-lit)::interpretation) (* si branche insatisfiable *)
-              | _ -> branche (* si branche satisfiable *)
+        match branche with 
+          | None -> solveur_dpll_rec (simplifie (-lit) clauses) ((-lit)::interpretation) (* si branche insatisfiable, on prend la négation *)
+          | _ -> branche (* si branche satisfiable on la renvoie *)
 
 (* tests *)
 
@@ -148,7 +152,6 @@ let rec solveur_dpll_rec clauses interpretation =
 
 (* let () = print_modele (solveur_dpll_rec systeme []) *)
  (*let () = print_modele (solveur_dpll_rec coloriage []) *)
-
 
 let () =
   let clauses = Dimacs.parse Sys.argv.(1) in
