@@ -1,0 +1,37 @@
+Exercice 1.1 (s = 4, d = 3, c = 3)
+
+unsat
+(error "line 27 column 10: model is not available")
+
+Exercice 1.2a (s = 5, d = 3, c = 3)
+
+unsat
+(error "line 21 column 10: model is not available")
+
+Exercice 1.2b (s = 6, d = 3, c = 3)
+
+
+sat
+(
+  (define-fun A ((x!0 S) (x!1 S)) Bool
+    (or (and (= x!0 s1) (= x!1 s3))
+        (and (= x!0 s4) (= x!1 s2))
+        (and (= x!0 s2) (= x!1 s4))
+        (and (= x!0 s1) (= x!1 s6))
+        (and (= x!0 s6) (= x!1 s5))
+        (and (= x!0 s6) (= x!1 s1))
+        (and (= x!0 s2) (= x!1 s5))
+        (and (= x!0 s2) (= x!1 s1))
+        (and (= x!0 s3) (= x!1 s5))
+        (and (= x!0 s5) (= x!1 s3))
+        (and (= x!0 s1) (= x!1 s2))
+        (and (= x!0 s3) (= x!1 s1))
+        (and (= x!0 s5) (= x!1 s6))
+        (and (= x!0 s4) (= x!1 s3))
+        (and (= x!0 s5) (= x!1 s2))
+        (and (= x!0 s4) (= x!1 s6))
+        (and (= x!0 s3) (= x!1 s4))
+        (and (= x!0 s6) (= x!1 s4))))
+)
+
+Le plus petit n est 6

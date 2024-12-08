@@ -9,8 +9,8 @@ Date limite: 15 décembre 2024 à 22:00
 Identité
 --------
 Nombre de binôme: **à remplir**
-Nom, prénom 1: **à remplir**
-Nom, prénom 2: **à remplir**
+Nom, prénom 1: XU Nic
+Nom, prénom 2: TEZEMPA Sylvain
 
 
 
@@ -41,7 +41,7 @@ Exercice 1
 
     Avez-vous vérifié que Z3 accepte les fichiers exo11.z3, exo12a.z3, exo12b.z3, ... et qu'il produit les résultats escomptés ?
     Réponse :
-   **à remplir**
+   Les fichiers exo11.z3, exo12a.z3 et exo12b.z3 ont été vérifiés avec Z3 et les résultats sont conformes à ce qui était attendu.
 
 Exercice 2
 
