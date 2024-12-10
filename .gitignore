@@ -5,3 +5,6 @@ bin/
 *.cmi
 *.cmo
 *.cmx
+
+model.txt
+output.z3

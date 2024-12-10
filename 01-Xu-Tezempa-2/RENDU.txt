@@ -47,7 +47,7 @@ Exercice 2
 
     Avez-vous vérifié que le fichier generate.ml compile sans erreurs ni avertissements, et que Z3 accepte le fichier généré instance.z3 ?
     Réponse :
-   **à remplir**
+  Le fichier generate.ml compile sans erreurs ni avertissements. Le fichier instance.z3 généré est accepté par Z3.
 
     Quelles instances du problème avez-vous testées ? Quelles sont les limites de cette approche sur la machine que vous avez utilisée ?
     Réponse :
