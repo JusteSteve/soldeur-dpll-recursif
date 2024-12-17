@@ -9,7 +9,7 @@ let generate_instance: unit -> unit = fun () ->
   (* afficher les valeurs de s, d et c*)
   printf "s = %d, d = %d, c = %d\n" s d c;
 
-  let fic = open_out "output.z3" in 
+  let fic = open_out "instance.z3" in 
   fprintf fic "(declare-datatypes () ((S ";
   for i = 1 to s do 
     fprintf fic " s%d" i
@@ -18,7 +18,7 @@ let generate_instance: unit -> unit = fun () ->
 
   fprintf fic "(declare-fun A (S S) Bool)\n";
   (*pas de boucle*)
-  fprintf fic "(assert (forall ((x S) (y S)) (=> (A x y) (not (= y x)))))\n";
+  fprintf fic "(assert (forall ((x S) (y S)) (=> (A x y) (distinct y x))))\n";
   (*le graphe n'est pas dirigé*)
   fprintf fic "(assert (forall ((x S) (y S)) (=> (A x y) (A y x))))\n";
 
@@ -33,7 +33,7 @@ let generate_instance: unit -> unit = fun () ->
   done;
   for i = 1 to d do 
     for j = i+1 to d do
-      fprintf fic "(not (= x%d x%d)) " i j
+      fprintf fic "(distinct x%d x%d) " i j
     done
   done;
   fprintf fic "))))\n";

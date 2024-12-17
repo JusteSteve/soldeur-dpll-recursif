@@ -1,0 +1,8 @@
+(declare-datatypes () ((S  s1 s2 s3 s4 s5 s6 s7 s8 s9 s10)))
+(declare-fun A (S S) Bool)
+(assert (forall ((x S) (y S)) (=> (A x y) (distinct y x))))
+(assert (forall ((x S) (y S)) (=> (A x y) (A y x))))
+(assert (forall ((x S)) (exists ((x1 S) (x2 S) (x3 S) (x4 S) (x5 S) ) (and (A x x1) (A x x2) (A x x3) (A x x4) (A x x5) (distinct x1 x2) (distinct x1 x3) (distinct x1 x4) (distinct x1 x5) (distinct x2 x3) (distinct x2 x4) (distinct x2 x5) (distinct x3 x4) (distinct x3 x5) (distinct x4 x5) ))))
+(assert (forall ((x1 S) (x2 S) (x3 S) ) (or (not (A x1 x2)) (not (A x1 x3)) (not (A x2 x3)) )))
+(check-sat)
+(get-model)

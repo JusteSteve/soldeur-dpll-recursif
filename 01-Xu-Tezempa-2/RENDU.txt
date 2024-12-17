@@ -53,6 +53,9 @@ Exercice 2
     Réponse :
    **à remplir**
 
+   Instances testées :
+
+
 Remarques supplémentaires (optionnel)
 
     Avez-vous d'autres observations ou commentaires sur votre rendu ?
