@@ -54,6 +54,7 @@ Exercice 2
    **à remplir**
 
    Instances testées :
+   Pour s < 10, d = 5 et c = 3 : on a pas de p
 
 
 Remarques supplémentaires (optionnel)
